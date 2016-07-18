@@ -11,11 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var AutocompleteComponent = (function () {
     function AutocompleteComponent() {
+        this.items = ["a", "b", "c", "d"];
+        this.isInit = false;
     }
     AutocompleteComponent = __decorate([
         core_1.Component({
             selector: "autocomplete",
-            templateUrl: ""
+            templateUrl: "templates/autocomplete.component.template.html"
         }), 
         __metadata('design:paramtypes', [])
     ], AutocompleteComponent);

@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="isInit">
     <ul>
         <li *ngFor="let item of items" (click)="selectItem(item)">{{ item }}</li>
     </ul>

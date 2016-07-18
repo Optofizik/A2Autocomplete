@@ -9,13 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var autocomplete_component_1 = require("./autocomplete.component");
 var FindNameComponent = (function () {
     function FindNameComponent() {
     }
     FindNameComponent = __decorate([
         core_1.Component({
             selector: "find-name",
-            templateUrl: "../templates/findname.component.template.html"
+            templateUrl: "../templates/findname.component.template.html",
+            directives: [autocomplete_component_1.AutocompleteComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], FindNameComponent);
