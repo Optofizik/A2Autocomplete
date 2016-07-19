@@ -9,7 +9,7 @@ interface IEventService {
 
 class Event {
     public EventName: string;
-    public Subsribers: any[];
+    public Subsribers: SenderCallback[];
 
     constructor() {
         this.Subsribers = [];

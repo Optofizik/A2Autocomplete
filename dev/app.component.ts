@@ -1,11 +1,11 @@
 import {Component} from '@angular/core'
-import {FindNameComponent} from "./findname.component";
+import {MainComponent} from "./main.component.ts";
 
 @Component({
     selector: 'my-app',
     template: `
-                <find-name></find-name>
+                <main-component></main-component>
               `,
-    directives: [FindNameComponent]
+    directives: [MainComponent]
 })
 export class AppComponent { }

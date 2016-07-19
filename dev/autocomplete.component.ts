@@ -1,21 +1,27 @@
 import {Component, OnInit} from "@angular/core"
 import {EventService} from "./event.service";
 
+export class AutocompleteConfig {
+
+        public eventOnInput: string;
+        public eventOnSelect: string;
+        public propertyDisplay: string;
+        public propertyChoose: string;
+        public propertySearch: string;
+        public source: any[];
+
+}
+
+
 @Component({
     selector: "autocomplete",
     templateUrl:"templates/autocomplete.component.template.html",
-    inputs: ["source", "eventOnInput", "eventOnSelect", "propertyDisplay", "propertyChoose", "propertySearch"]
+    inputs: ["config"]
 })
 export class AutocompleteComponent implements OnInit{
 
-    public eventOnInput: string;
-    public eventOnSelect: string;
+    public config: AutocompleteConfig;
 
-    public propertyDisplay: string;
-    public propertyChoose: string;
-    public propertySearch: string;
-
-    public source: any[];
     public filtered: any[];
     public isInit: boolean = false;
 
@@ -24,29 +30,32 @@ export class AutocompleteComponent implements OnInit{
     onChangeInput(value: string, object: any): void {
 
         if(value == "") {
-            object.isInit = false;
-            object.filtered = null;
+            object.turnOff();
         }
         else {
-
             object.isInit = true;
-            object.filtered = object.source.filter((it, i, arr) => {
-                 let tempStr: string = it[object.propertySearch].toString().toUpperCase();
+            let tempConfig = object.config;
+            object.filtered = tempConfig.source.filter((it, i, arr) => {
+                 let tempStr: string = it[tempConfig.propertySearch].toString().toUpperCase();
                  return tempStr.indexOf(value.toUpperCase()) != -1;
             });
         }
     }
 
     selectItem(item): void {
+        this.eventService.raiseEvent(this, this.config.eventOnSelect, item);
+        this.turnOff();
+    }
 
-        this.eventService.raiseEvent(this, this.eventOnSelect, item);
+    ngOnInit():any {
+        this.eventService.subscriveToEvent(this, this.config.eventOnInput, this.onChangeInput);
+    }
 
+    turnOff() {
         this.isInit = false;
         this.filtered = null;
     }
 
-    ngOnInit():any {
-        this.eventService.subscriveToEvent(this, this.eventOnInput, this.onChangeInput);
-    }
-
 }
+
+

@@ -8,20 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var main_component_ts_1 = require("./main.component.ts");
-var AppComponent = (function () {
-    function AppComponent() {
+var core_1 = require("@angular/core");
+var TextboxAutocomplete = (function () {
+    function TextboxAutocomplete() {
     }
-    AppComponent = __decorate([
+    TextboxAutocomplete = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            template: "\n                <main-component></main-component>\n              ",
-            directives: [main_component_ts_1.MainComponent]
+            selector: "txt-autocomplete",
+            templateUrl: ""
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], TextboxAutocomplete);
+    return TextboxAutocomplete;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.TextboxAutocomplete = TextboxAutocomplete;
+//# sourceMappingURL=TextboxAutocomplete.js.map

@@ -10,6 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var event_service_1 = require("./event.service");
+var AutocompleteConfig = (function () {
+    function AutocompleteConfig() {
+    }
+    return AutocompleteConfig;
+}());
+exports.AutocompleteConfig = AutocompleteConfig;
 var AutocompleteComponent = (function () {
     function AutocompleteComponent(eventService) {
         this.eventService = eventService;
@@ -17,30 +23,33 @@ var AutocompleteComponent = (function () {
     }
     AutocompleteComponent.prototype.onChangeInput = function (value, object) {
         if (value == "") {
-            object.isInit = false;
-            object.filtered = null;
+            object.turnOff();
         }
         else {
             object.isInit = true;
-            object.filtered = object.source.filter(function (it, i, arr) {
-                var tempStr = it[object.propertySearch].toString().toUpperCase();
+            var tempConfig_1 = object.config;
+            object.filtered = tempConfig_1.source.filter(function (it, i, arr) {
+                var tempStr = it[tempConfig_1.propertySearch].toString().toUpperCase();
                 return tempStr.indexOf(value.toUpperCase()) != -1;
             });
         }
     };
     AutocompleteComponent.prototype.selectItem = function (item) {
-        this.eventService.raiseEvent(this, this.eventOnSelect, item);
-        this.isInit = false;
-        this.filtered = null;
+        this.eventService.raiseEvent(this, this.config.eventOnSelect, item);
+        this.turnOff();
     };
     AutocompleteComponent.prototype.ngOnInit = function () {
-        this.eventService.subscriveToEvent(this, this.eventOnInput, this.onChangeInput);
+        this.eventService.subscriveToEvent(this, this.config.eventOnInput, this.onChangeInput);
+    };
+    AutocompleteComponent.prototype.turnOff = function () {
+        this.isInit = false;
+        this.filtered = null;
     };
     AutocompleteComponent = __decorate([
         core_1.Component({
             selector: "autocomplete",
             templateUrl: "templates/autocomplete.component.template.html",
-            inputs: ["source", "eventOnInput", "eventOnSelect", "propertyDisplay", "propertyChoose", "propertySearch"]
+            inputs: ["config"]
         }), 
         __metadata('design:paramtypes', [event_service_1.EventService])
     ], AutocompleteComponent);

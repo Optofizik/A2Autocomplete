@@ -14,18 +14,24 @@ var event_service_1 = require("./event.service");
 var FindNameComponent = (function () {
     function FindNameComponent(eventService) {
         this.eventService = eventService;
-        this.autocompleteInput = "autocompleteInput";
-        this.autocompleteSelect = "autocompleteSelect";
         this.persons = [
             { id: 1, name: "Dima" },
             { id: 2, name: "Julia" },
             { id: 3, name: "Dimas" },
             { id: 4, name: "Juliet" }
         ];
-        this.eventService.subscriveToEvent(this, this.autocompleteSelect, this.onAutocompleteSelect);
+        this.autocompleteConfig = {
+            eventOnInput: "autocompleteInput",
+            eventOnSelect: "autocompleteSelect",
+            propertyDisplay: "name",
+            propertyChoose: "name",
+            propertySearch: "name",
+            source: this.persons
+        };
+        this.eventService.subscriveToEvent(this, this.autocompleteConfig.eventOnSelect, this.onAutocompleteSelect);
     }
     FindNameComponent.prototype.onKeyUp = function () {
-        this.eventService.raiseEvent(this, this.autocompleteInput, this.name);
+        this.eventService.raiseEvent(this, this.autocompleteConfig.eventOnInput, this.name);
     };
     FindNameComponent.prototype.onAutocompleteSelect = function (value, object) {
         object.name = value;
