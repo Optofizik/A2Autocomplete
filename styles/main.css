@@ -6,3 +6,25 @@ h1 {
 body {
     margin: 2em;
 }
+
+ul.autocomplete {
+    list-style: none;
+    border: 2px solid #00b3ee;
+    background-color: #99cfe7;
+    padding: 0px;
+    position: relative;
+    margin: 0px;
+    display: inline-block;
+}
+
+ul.autocomplete li {
+    padding: 5px;
+    font-size: 14pt;
+    font-family: Calibri;
+    border-bottom: 1px solid blue;
+    cursor: pointer;
+}
+
+ul.autocomplete li:last-child {
+    border-bottom: none;
+}

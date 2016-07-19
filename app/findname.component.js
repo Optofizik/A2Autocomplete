@@ -10,16 +10,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var autocomplete_component_1 = require("./autocomplete.component");
+var event_service_1 = require("./event.service");
 var FindNameComponent = (function () {
-    function FindNameComponent() {
+    function FindNameComponent(eventService) {
+        this.eventService = eventService;
+        this.autocompleteInput = "autocompleteInput";
+        this.autocompleteSelect = "autocompleteSelect";
+        this.persons = [
+            { id: 1, name: "Dima" },
+            { id: 2, name: "Julia" },
+            { id: 3, name: "Dimas" },
+            { id: 4, name: "Juliet" }
+        ];
+        this.eventService.subscriveToEvent(this, this.autocompleteSelect, this.onAutocompleteSelect);
     }
+    FindNameComponent.prototype.onKeyUp = function () {
+        this.eventService.raiseEvent(this, this.autocompleteInput, this.name);
+    };
+    FindNameComponent.prototype.onAutocompleteSelect = function (value, object) {
+        object.name = value;
+    };
     FindNameComponent = __decorate([
         core_1.Component({
             selector: "find-name",
             templateUrl: "../templates/findname.component.template.html",
             directives: [autocomplete_component_1.AutocompleteComponent]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [event_service_1.EventService])
     ], FindNameComponent);
     return FindNameComponent;
 }());

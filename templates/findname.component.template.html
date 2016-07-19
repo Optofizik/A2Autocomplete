@@ -1,5 +1,10 @@
 <div>
     <h2>Find Name</h2>
-    <input type="text" class="input" [(ngModel)]="name" /> &nbsp; <span>{{ name }}</span>
-    <autocomplete></autocomplete>
+    <input type="text" class="input" [(ngModel)]="name" (keyup)="onKeyUp()" /> &nbsp; <span>{{ name }}</span>
+    <autocomplete [eventOnInput]="autocompleteInput"
+                  [eventOnSelect]="autocompleteSelect"
+                  [propertyDisplay] = "'name'"
+                  [propertySearch] = "'name'"
+                  [propertyChoose]="'id'"
+                  [source]="persons" ></autocomplete>
 </div>
