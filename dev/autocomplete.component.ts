@@ -1,59 +1,80 @@
-import {Component, OnInit} from "@angular/core"
+import {Component} from "@angular/core"
 import {EventService} from "./event.service";
-import {AutocompleteConfig} from "./configs";
 
+export class AutocompleteConfig {
+
+    public minLength: number;
+
+    public elementId: string;
+
+    public propertyDisplay: Array<string>;
+    public propertySearch: Array<string>;
+    public propertyInputDisplay: Array<string>;
+
+    public eventFromComponent: string;
+
+    public source: any[];
+}
 
 @Component({
     selector: "autocomplete",
     templateUrl: "templates/autocomplete.component.template.html",
     inputs: ["config"]
 })
-export class AutocompleteComponent implements OnInit {
+export class AutocompleteComponent {
 
-    public config:AutocompleteConfig;
+    constructor(private eventService: EventService) {}
+
+    public config: AutocompleteConfig;
 
     public filtered:any[];
     public isInit:boolean = false;
+    public mask:string;
 
-    constructor(private eventService:EventService) {
+
+    onKeyUp():void {
+        if (this.mask.length >= this.config.minLength) {
+
+            let tempConfig = this.config;
+            this.filtered = tempConfig.source.filter((it, i, arr) => {
+                
+                let tempStr:string;
+
+                for(let i: number = 0; i < tempConfig.propertySearch.length; i++)
+                {
+                    tempStr = it[tempConfig.propertySearch[i]].toString().toUpperCase()
+                    if(tempStr.indexOf(this.mask.toString().toUpperCase()) != -1)
+                        return true;
+                }
+
+                return false;
+                  
+            });
+
+            this.isInit = this.filtered.length > 0;
+
+        }
+        else {
+            this.turnOff();
+        }
     }
 
-    onChangeInput(value:any, object:any):void {
-
-        let tempConfig = object.config;
-        object.filtered = tempConfig.source.filter((it, i, arr) => {
-            let tempStr:string = it[tempConfig.propertySearch].toString().toUpperCase();
-            return tempStr.indexOf(value.toString().toUpperCase()) != -1;
-        });
-
-        object.isInit = object.filtered.length > 0;
-    }
-
-    selectItem(value:any):void {
-        this.eventService.raiseEvent(this, this.config.eventFromComponent, value);
+    selectItem(item): void {
+        this.mask = this.formatPropertyDisplay(item, 'propertyInputDisplay')
+        this.eventService.raiseEvent(this, this.config.eventFromComponent, item);
         this.turnOff();
     }
 
-    ngOnInit():any {
-        this.eventService.subscriveToEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.onChangeInput);
-    }
+    formatPropertyDisplay(item, propertyName): string {
 
-    formatPropertyDisplay(item): string {
-
-        let tempArray = this.config.propertyDisplay;
+        let tempArray = this.config[propertyName];
         let template:string = tempArray[0];
 
         for (let i:number = 1; i < tempArray.length; i++) {
             template = template.replace("{" + (i-1) + "}", item[tempArray[i]]);
         }
 
-       return template;
-    }
-
-    onKeyUp():void {
-        if (this.mask.length >= this.config.minLength) {
-            this.eventService.raiseEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.mask );
-        }
+        return template;
     }
 
     turnOff() {
@@ -62,5 +83,3 @@ export class AutocompleteComponent implements OnInit {
     }
 
 }
-
-

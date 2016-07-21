@@ -1,8 +1,8 @@
 <div class="autocomplete-container">
-    <input type="text" class="autocomplete-input" [(ngModel)]="mask" (keyup)="onKeyUp()"/>
+    <input type="text" class="autocomplete-input" [(ngModel)]="mask" (keyup)="onKeyUp()" />
     <div *ngIf="isInit">
         <ul class="autocomplete">
-            <li *ngFor="let item of filtered" (click)="selectItem(item)">{{ formatPropertyDisplay(item) }}</li>
+            <li *ngFor="let item of filtered" (click)="selectItem(item)">{{ formatPropertyDisplay(item, 'propertyDisplay') }}</li>
         </ul>
     </div>
 </div>

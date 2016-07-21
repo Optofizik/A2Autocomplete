@@ -10,38 +10,48 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var event_service_1 = require("./event.service");
+var AutocompleteConfig = (function () {
+    function AutocompleteConfig() {
+    }
+    return AutocompleteConfig;
+}());
+exports.AutocompleteConfig = AutocompleteConfig;
 var AutocompleteComponent = (function () {
     function AutocompleteComponent(eventService) {
         this.eventService = eventService;
         this.isInit = false;
     }
-    AutocompleteComponent.prototype.onChangeInput = function (value, object) {
-        var tempConfig = object.config;
-        object.filtered = tempConfig.source.filter(function (it, i, arr) {
-            var tempStr = it[tempConfig.propertySearch].toString().toUpperCase();
-            return tempStr.indexOf(value.toString().toUpperCase()) != -1;
-        });
-        object.isInit = object.filtered.length > 0;
+    AutocompleteComponent.prototype.onKeyUp = function () {
+        var _this = this;
+        if (this.mask.length >= this.config.minLength) {
+            var tempConfig_1 = this.config;
+            this.filtered = tempConfig_1.source.filter(function (it, i, arr) {
+                var tempStr;
+                for (var i_1 = 0; i_1 < tempConfig_1.propertySearch.length; i_1++) {
+                    tempStr = it[tempConfig_1.propertySearch[i_1]].toString().toUpperCase();
+                    if (tempStr.indexOf(_this.mask.toString().toUpperCase()) != -1)
+                        return true;
+                }
+                return false;
+            });
+            this.isInit = this.filtered.length > 0;
+        }
+        else {
+            this.turnOff();
+        }
     };
-    AutocompleteComponent.prototype.selectItem = function (value) {
-        this.eventService.raiseEvent(this, this.config.eventFromComponent, value);
+    AutocompleteComponent.prototype.selectItem = function (item) {
+        this.mask = this.formatPropertyDisplay(item, 'propertyInputDisplay');
+        this.eventService.raiseEvent(this, this.config.eventFromComponent, item);
         this.turnOff();
     };
-    AutocompleteComponent.prototype.ngOnInit = function () {
-        this.eventService.subscriveToEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.onChangeInput);
-    };
-    AutocompleteComponent.prototype.formatPropertyDisplay = function (item) {
-        var tempArray = this.config.propertyDisplay;
+    AutocompleteComponent.prototype.formatPropertyDisplay = function (item, propertyName) {
+        var tempArray = this.config[propertyName];
         var template = tempArray[0];
         for (var i = 1; i < tempArray.length; i++) {
             template = template.replace("{" + (i - 1) + "}", item[tempArray[i]]);
         }
         return template;
-    };
-    AutocompleteComponent.prototype.onKeyUp = function () {
-        if (this.mask.length >= this.config.minLength) {
-            this.eventService.raiseEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.mask);
-        }
     };
     AutocompleteComponent.prototype.turnOff = function () {
         this.isInit = false;

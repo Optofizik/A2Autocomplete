@@ -1,21 +1,20 @@
 import {Component} from "@angular/core";
 import {EventService} from "./event.service";
-import {TextboxAutocompleteComponent} from "./textbox-autocomplete.component";
-import {TextboxAutocompleteConfig} from "./configs";
+import {AutocompleteComponent, AutocompleteConfig} from "./autocomplete.component";
 
 @Component({
     selector: "main-component",
     templateUrl: "../templates/main.component.template.html",
-    directives: [TextboxAutocompleteComponent]
+    directives: [AutocompleteComponent]
 })
 export class MainComponent {
 
-    public config:TextboxAutocompleteConfig = {
+    public config:AutocompleteConfig = {
         minLength: 3,
         elementId: "hero-name",
         propertyDisplay: ["{0} {1} {2}", 'lastName', 'firstName', 'id'],
-        propertySearch: "firstName",
-        propertyInputDisplay: ["{0} {1} {2}", 'lastName', 'firstName', 'id'],
+        propertySearch: ["firstName", "lastName"],
+        propertyInputDisplay: ["{0} {1}", 'id', 'lastName'],
         eventFromComponent: "select-hero-id",
         source: [
             {id: 1, firstName: "Dima", lastName: "Jakimov"},

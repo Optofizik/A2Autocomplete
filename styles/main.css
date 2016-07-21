@@ -25,6 +25,12 @@ ul.autocomplete li {
     cursor: pointer;
 }
 
+ul.autocomplete li:hover {
+    background-color: whitesmoke;
+    padding-bottom: 7px;
+    padding-top: 2px;
+}
+
 ul.autocomplete li:last-child {
     border-bottom: none;
 }

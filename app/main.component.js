@@ -9,15 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var textbox_autocomplete_component_1 = require("./textbox-autocomplete.component");
+var autocomplete_component_1 = require("./autocomplete.component");
 var MainComponent = (function () {
     function MainComponent() {
         this.config = {
             minLength: 3,
             elementId: "hero-name",
             propertyDisplay: ["{0} {1} {2}", 'lastName', 'firstName', 'id'],
-            propertySearch: "firstName",
-            propertyInputDisplay: ["{0} {1} {2}", 'lastName', 'firstName', 'id'],
+            propertySearch: ["firstName", "lastName"],
+            propertyInputDisplay: ["{0} {1}", 'id', 'lastName'],
             eventFromComponent: "select-hero-id",
             source: [
                 { id: 1, firstName: "Dima", lastName: "Jakimov" },
@@ -33,7 +33,7 @@ var MainComponent = (function () {
         core_1.Component({
             selector: "main-component",
             templateUrl: "../templates/main.component.template.html",
-            directives: [textbox_autocomplete_component_1.TextboxAutocompleteComponent]
+            directives: [autocomplete_component_1.AutocompleteComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], MainComponent);
