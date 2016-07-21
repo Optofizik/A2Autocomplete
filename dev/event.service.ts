@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core'
 
 
 interface IEventService {
-    subscriveToEvent(object: any, eventName: string, callbackFunc: (value: string, parentObject: any) => void);
-    raiseEvent(ender: any, eventName: string, valueToBroadcast:string);
+    subscriveToEvent(object: any, eventName: string, callbackFunc: (value: any, parentObject: any) => void);
+    raiseEvent(ender: any, eventName: string, valueToBroadcast:any);
     unsubscribeFromEvent(object: any, eventName: string);
 }
 
@@ -30,7 +30,7 @@ export class EventService implements IEventService{
         this.eventArray = [];
     }
 
-    subscriveToEvent(object:any, eventName:string, callbackFunc: (value: string, object: any) => void) {
+    subscriveToEvent(object:any, eventName:string, callbackFunc: (value: any, object: any) => void) {
 
         let event: Event = this.eventArray.find((ev, i, arr) => {
             return ev.EventName === eventName;
@@ -62,7 +62,7 @@ export class EventService implements IEventService{
         }
     }
 
-    raiseEvent(sender:any, eventName: string, valueToBroadcast:string) {
+    raiseEvent(sender:any, eventName: string, valueToBroadcast: any) {
         let event = this.eventArray.find((ev, i, arr) => {
             return ev.EventName === eventName;
         });

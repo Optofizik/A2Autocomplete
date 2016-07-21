@@ -1,5 +1,5 @@
 import {Component} from '@angular/core'
-import {MainComponent} from "./main.component.ts";
+import {MainComponent} from "./main.component";
 
 @Component({
     selector: 'my-app',

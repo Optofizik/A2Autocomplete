@@ -1,5 +1,8 @@
-<div *ngIf="isInit">
-    <ul class="autocomplete">
-        <li *ngFor="let item of filtered" (click)="selectItem(item[config.propertyChoose])">{{ item[config.propertyDisplay] }}</li>
-    </ul>
+<div class="autocomplete-container">
+    <input type="text" class="autocomplete-input" [(ngModel)]="mask" (keyup)="onKeyUp()"/>
+    <div *ngIf="isInit">
+        <ul class="autocomplete">
+            <li *ngFor="let item of filtered" (click)="selectItem(item)">{{ formatPropertyDisplay(item) }}</li>
+        </ul>
+    </div>
 </div>

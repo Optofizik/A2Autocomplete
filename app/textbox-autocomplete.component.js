@@ -10,35 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var event_service_1 = require("./event.service");
-var TextboxAutocompleteConfig = (function () {
-    function TextboxAutocompleteConfig() {
-    }
-    return TextboxAutocompleteConfig;
-}());
-exports.TextboxAutocompleteConfig = TextboxAutocompleteConfig;
+var autocomplete_component_1 = require("./autocomplete.component");
 var TextboxAutocompleteComponent = (function () {
     function TextboxAutocompleteComponent(eventService) {
         this.eventService = eventService;
-        this.isInit = false;
     }
     TextboxAutocompleteComponent.prototype.onKeyUp = function () {
-        var _this = this;
         if (this.mask.length >= this.config.minLength) {
-            this.isInit = true;
-            var tempConfig_1 = this.config;
-            this.filteredItems = tempConfig_1.source.filter(function (it, i, arr) {
-                var searchItem = it[tempConfig_1.propertySearch].toString().toUpper();
-                return searchItem.indexOf(_this.mask.toUpperCase()) != -1;
-            });
+            this.eventService.raiseEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.mask);
         }
     };
-    TextboxAutocompleteComponent.prototype.selectItem = function (value) {
-        this.eventService.raiseEvent(this, this.config.eventFromComponent, value[this.config.propertyToSend]);
+    TextboxAutocompleteComponent.prototype.updateInputValue = function (value, object) {
+        object.mask = value[object.config.propertyInputDisplay];
+    };
+    TextboxAutocompleteComponent.prototype.ngOnInit = function () {
+        this.eventService.subscriveToEvent(this, this.config.eventFromComponent, this.updateInputValue);
     };
     TextboxAutocompleteComponent = __decorate([
         core_1.Component({
             selector: "txt-autocomplete",
-            templateUrl: "../templates/textbox-autocomplete.component.template.html"
+            templateUrl: "../templates/textbox-autocomplete.component.template.html",
+            inputs: ["config"],
+            directives: [autocomplete_component_1.AutocompleteComponent]
         }), 
         __metadata('design:paramtypes', [event_service_1.EventService])
     ], TextboxAutocompleteComponent);

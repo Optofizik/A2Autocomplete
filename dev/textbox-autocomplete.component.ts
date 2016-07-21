@@ -1,48 +1,36 @@
-import {Component} from "@angular/core"
+import {Component, OnInit} from "@angular/core"
 import {EventService} from "./event.service";
-
-export class TextboxAutocompleteConfig {
-
-    public minLength: number;
-
-    public eventFromComponent: string;
-
-    public propertyDisplay: string;
-    public propertyChoose: string;
-    public propertySearch: string;
-    public propertyToSend: string;
-
-    public source: any[];
-}
+import {TextboxAutocompleteConfig} from "./configs";
+import {AutocompleteComponent} from "./autocomplete.component";
 
 
 @Component({
     selector: "txt-autocomplete",
-    templateUrl: "../templates/textbox-autocomplete.component.template.html"
+    templateUrl: "../templates/textbox-autocomplete.component.template.html",
+    inputs: ["config"],
+    directives: [AutocompleteComponent]
 })
-export class TextboxAutocompleteComponent {
+export class TextboxAutocompleteComponent implements OnInit{
 
-    constructor(public eventService: EventService) {}
-
-    public isInit: boolean = false;
-    public mask: string;
-    public filteredItems: any[];
+    public mask:string;
     public config: TextboxAutocompleteConfig;
 
-    onKeyUp(): void {
-        if(this.mask.length >= this.config.minLength)
-        {
-            this.isInit = true;
-            let tempConfig = this.config;
-            this.filteredItems = tempConfig.source.filter((it, i, arr) => {
-                let searchItem = it[tempConfig.propertySearch].toString().toUpper();
-                return searchItem.indexOf(this.mask.toUpperCase()) != -1;
-            });
+    constructor(public eventService:EventService) {}
+
+    onKeyUp():void {
+        if (this.mask.length >= this.config.minLength) {
+           this.eventService.raiseEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.mask );
         }
     }
 
-    selectItem(value: any): void {
-        this.eventService.raiseEvent(this,this.config.eventFromComponent, value[this.config.propertyToSend]);
+    updateInputValue(value: any, object: any): void {
+        object.mask = value[object.config.propertyInputDisplay];
     }
+
+    ngOnInit():any {
+        this.eventService.subscriveToEvent(this,this.config.eventFromComponent, this.updateInputValue);
+    }
+
+
 }
 

@@ -10,36 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var event_service_1 = require("./event.service");
-var AutocompleteConfig = (function () {
-    function AutocompleteConfig() {
-    }
-    return AutocompleteConfig;
-}());
-exports.AutocompleteConfig = AutocompleteConfig;
 var AutocompleteComponent = (function () {
     function AutocompleteComponent(eventService) {
         this.eventService = eventService;
         this.isInit = false;
     }
     AutocompleteComponent.prototype.onChangeInput = function (value, object) {
-        if (value == "") {
-            object.turnOff();
-        }
-        else {
-            object.isInit = true;
-            var tempConfig_1 = object.config;
-            object.filtered = tempConfig_1.source.filter(function (it, i, arr) {
-                var tempStr = it[tempConfig_1.propertySearch].toString().toUpperCase();
-                return tempStr.indexOf(value.toUpperCase()) != -1;
-            });
-        }
+        var tempConfig = object.config;
+        object.filtered = tempConfig.source.filter(function (it, i, arr) {
+            var tempStr = it[tempConfig.propertySearch].toString().toUpperCase();
+            return tempStr.indexOf(value.toString().toUpperCase()) != -1;
+        });
+        object.isInit = object.filtered.length > 0;
     };
-    AutocompleteComponent.prototype.selectItem = function (item) {
-        this.eventService.raiseEvent(this, this.config.eventOnSelect, item);
+    AutocompleteComponent.prototype.selectItem = function (value) {
+        this.eventService.raiseEvent(this, this.config.eventFromComponent, value);
         this.turnOff();
     };
     AutocompleteComponent.prototype.ngOnInit = function () {
-        this.eventService.subscriveToEvent(this, this.config.eventOnInput, this.onChangeInput);
+        this.eventService.subscriveToEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.onChangeInput);
+    };
+    AutocompleteComponent.prototype.formatPropertyDisplay = function (item) {
+        var tempArray = this.config.propertyDisplay;
+        var template = tempArray[0];
+        for (var i = 1; i < tempArray.length; i++) {
+            template = template.replace("{" + (i - 1) + "}", item[tempArray[i]]);
+        }
+        return template;
+    };
+    AutocompleteComponent.prototype.onKeyUp = function () {
+        if (this.mask.length >= this.config.minLength) {
+            this.eventService.raiseEvent(this, "autocompleteInput" + this.config.elementId.toString(), this.mask);
+        }
     };
     AutocompleteComponent.prototype.turnOff = function () {
         this.isInit = false;

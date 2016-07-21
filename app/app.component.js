@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var main_component_ts_1 = require("./main.component.ts");
+var main_component_1 = require("./main.component");
 var AppComponent = (function () {
     function AppComponent() {
     }
@@ -17,7 +17,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'my-app',
             template: "\n                <main-component></main-component>\n              ",
-            directives: [main_component_ts_1.MainComponent]
+            directives: [main_component_1.MainComponent]
         }), 
         __metadata('design:paramtypes', [])
     ], AppComponent);
