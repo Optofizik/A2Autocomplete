@@ -33,7 +33,15 @@ var AutocompleteComponent = (function () {
                         return true;
                 }
                 return false;
+            }).sort(function (a, b) {
+                if (a[tempConfig_1.propertyToSort] > b[tempConfig_1.propertyToSort]) {
+                    return 1;
+                }
+                else {
+                    return -1;
+                }
             });
+            this.filtered = this.filtered.slice(0, 10);
             this.isInit = this.filtered.length > 0;
         }
         else {

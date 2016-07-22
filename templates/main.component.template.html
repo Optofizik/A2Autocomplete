@@ -1,4 +1,5 @@
 <div>
     <h2>Find Name</h2>
+    <div *ngIf="selectedItem">{{ selectedItem.firstName + " " + selectedItem.lastName }}</div>
     <autocomplete [config]="config"></autocomplete>
 </div>

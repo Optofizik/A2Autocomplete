@@ -24,7 +24,7 @@ var EventService = (function () {
     function EventService() {
         this.eventArray = [];
     }
-    EventService.prototype.subscriveToEvent = function (object, eventName, callbackFunc) {
+    EventService.prototype.subscribeToEvent = function (object, eventName, callbackFunc) {
         var event = this.eventArray.find(function (ev, i, arr) {
             return ev.EventName === eventName;
         });

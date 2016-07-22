@@ -2,18 +2,14 @@ import {Injectable} from '@angular/core'
 
 
 interface IEventService {
-    subscriveToEvent(object: any, eventName: string, callbackFunc: (value: any, parentObject: any) => void);
+    subscribeToEvent(object: any, eventName: string, callbackFunc: (value: any, parentObject: any) => void);
     raiseEvent(ender: any, eventName: string, valueToBroadcast:any);
     unsubscribeFromEvent(object: any, eventName: string);
 }
 
 class Event {
     public EventName: string;
-    public Subsribers: SenderCallback[];
-
-    constructor() {
-        this.Subsribers = [];
-    }
+    public Subsribers: SenderCallback[] = [];
 }
 
 class SenderCallback {
@@ -24,13 +20,9 @@ class SenderCallback {
 @Injectable()
 export class EventService implements IEventService{
 
-    private eventArray: Event[];
+    private eventArray: Event[] = [];
 
-    constructor() {
-        this.eventArray = [];
-    }
-
-    subscriveToEvent(object:any, eventName:string, callbackFunc: (value: any, object: any) => void) {
+    subscribeToEvent(object:any, eventName:string, callbackFunc: (value: any, object: any) => void) {
 
         let event: Event = this.eventArray.find((ev, i, arr) => {
             return ev.EventName === eventName;
